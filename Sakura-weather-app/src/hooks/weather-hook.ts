@@ -1,5 +1,5 @@
 import {useState} from "react";
-
+// import ReactWeather, { useOpenWeather } from 'react-open-weather';
 
 
 type WeatherType = {
@@ -15,14 +15,20 @@ type WeatherType = {
 
 
 export function WeatherHook() {
+    const [cityInput, setCityInput] = useState<string>("");
     const[weather, setWeather] = useState<WeatherType>({
         loading: false,
         error: false,
         success: false,
         temperature: null,
         type: "temperature",
-        city: "city",
+        city: "",
     });
+
+
+
+
+
 
 
 
@@ -34,13 +40,14 @@ export function WeatherHook() {
             const temp = Math.floor(Math.random() * 35);
             const type = types[Math.floor(Math.random() * types.length)] as WeatherType["type"];
 
+
             setWeather({
                 loading: false,
                 error: false,
                 success: true,
                 temperature: temp,
                 type: type,
-                city: "Tokyo",
+                city: cityInput,
             });
         },2000);
 
@@ -54,6 +61,8 @@ export function WeatherHook() {
 
     return {
         weather,
+        cityInput,
+        setCityInput,
         updateWeather,
         printer,
     };

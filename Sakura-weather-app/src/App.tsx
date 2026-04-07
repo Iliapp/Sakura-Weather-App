@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { WeatherHook } from "./hooks/weather-hook";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const { weather, updateWeather, printer, cityInput,setCityInput } = WeatherHook();
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <div className="p-8 font-sans max-w-2xl mx-auto">
+            <h1 className="text-4xl font-bold mb-6">🌤️ Sakura Weather App</h1>
+            
+            <div className="bg-gray-100 p-5 rounded-lg mb-6">
+                <h2 className="text-2xl font-semibold mb-3">Temperature: {weather.temperature}°C</h2>
+                <p className="text-lg text-gray-700 mb-2">Weather type: {weather.type}</p>
+                {/*<p className="text-lg text-gray-700">City: {weather.city}</p>*/}
+                <input type="text" value={cityInput} onChange={(e) => setCityInput(e.target.value)} placeholder="Write a city:"className={"flex justify-between items-center"} />
+            </div>
+
+            <button 
+                onClick={updateWeather} 
+                disabled={weather.loading}
+                className={`px-5 py-2 text-white rounded font-semibold bg-pink-500 transition ${weather.loading ? "opacity-60 cursor-not-allowed" : "cursor-pointer hover:bg-pink-600"}`}
+            >
+                {weather.loading ? "Loading..." : "Update Weather"}
+            </button>
+
+            {weather.loading && <p className="mt-4 text-gray-600">⏳ Loading...</p>}
+            {weather.success && <p className="mt-4 text-green-600 font-semibold">✅ Weather updated!</p>}
+            {weather.error && <p className="mt-4 text-red-600 font-semibold">❌ Error loading weather</p>}
+
+            <button 
+                onClick={printer}
+                className="mt-5 ml-2 px-4 py-2 border border-gray-400 rounded cursor-pointer hover:bg-gray-100 transition"
+            >
+                Log to Console
+            </button>
+        </div>
+    );
 }
 
-export default App
+export default App;
+
+
+
