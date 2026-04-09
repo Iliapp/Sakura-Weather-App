@@ -34,6 +34,11 @@ export function WeatherHook() {
 
 
     function updateWeather() {
+
+        if (cityInput === "") {
+            return ;
+        }
+
         setWeather({...weather, loading: true})
         setTimeout(() => {
             const types = ["sun", "rain", "snow", "night"];
@@ -67,4 +72,3 @@ export function WeatherHook() {
         printer,
     };
 }
-
