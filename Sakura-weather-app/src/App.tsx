@@ -1,10 +1,29 @@
+
+
 import { WeatherHook } from "./hooks/weather-hook";
+import SunAnimation from "./animation/SunAnimation";
+import RainAnimation from "./animation/RainAnimation";
+import SnowAnimation from "./animation/SnowAnimation";
+import NightAnimation from "./animation/NightAnimation";
+
 
 function App() {
     const { weather, updateWeather, printer, cityInput,setCityInput } = WeatherHook();
 
+    let WeatherAnimation = null;
+
+
+    if (weather.type === "sun") WeatherAnimation = <SunAnimation />;
+    else if (weather.type === "rain") WeatherAnimation = <RainAnimation />;
+    else if (weather.type === "snow") WeatherAnimation = <SnowAnimation />;
+    else if (weather.type === "night") WeatherAnimation = <NightAnimation />;
+
+
     return (
         <div className="p-8 font-sans max-w-2xl mx-auto">
+
+            {WeatherAnimation}
+
             <h1 className="text-4xl font-bold mb-6">🌤️ Sakura Weather App</h1>
 
             <div className="bg-gray-100 p-5 rounded-lg mb-6">
