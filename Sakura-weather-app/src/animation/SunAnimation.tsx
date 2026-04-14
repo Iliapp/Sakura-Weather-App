@@ -1,51 +1,40 @@
 import Particles from "@tsparticles/react";
-// import { loadFull } from "tsparticles";
-// import { useCallback } from "react";
-// import type { Engine } from "tsparticles-engine";
-import { useMemo } from "react";
-import type { ISourceOptions } from "tsparticles-engine";
+import { useMemo, useCallback } from "react";
+import { loadSlim } from "tsparticles-slim";
 
-export function MySunAnimation({ type }: { type: string }) {
+export default function MySunAnimation({ type }: { type: string }) {
 
-    // const particlesInit = useCallback(async (engine: Engine) => {
-    //     await loadFull(engine);
-    // }, []);
+    const particlesInit = useCallback(async (engine: any) => {
+        await loadSlim(engine);
+    }, []);
 
-    const getOptions = (type: string): ISourceOptions => {
-        if (type === "rain") {
-            return {
-                particles: {
-                    number: {
-                        value: 100
-                    },
-                    move: {
-                        enable: true,
-                        speed: 10,
-                        direction: "bottom"
-                    },
-                    shape: {
-                        type: "image",
-                        options: {
-                            image: {
-                                src: "https://particles.js.org/images/flower.svg",
-                                width: 32,
-                                height: 32
-                            }
-                        }
-                    }
-                }
-            };
-        }
-
-        return {
-            particles: {
-                number: {value: 0}
+    const options = useMemo(() => ({
+        particles: {
+            number: { value: 80 },
+            move: {
+                enable: true,
+                speed: 2,
+                direction: "bottom"
+            },
+            shape: {
+                type: "circle"
             }
-        };
-    };
+        }
+    }), [type]);
 
+    return (
+        <div className="w-full h-screen relative overflow-hidden bg-gradient-to-b from-blue-400 to-blue-100">
 
-    const options = useMemo(() => getOptions(type), [type]);
+            <Particles
+                init={particlesInit}
+                options={options as any}
+                className="absolute inset-0 z-0"
+            />
 
-    return <Particles options={options} />;
+            <div className="relative z-10 flex items-center justify-center h-full text-4xl font-bold text-white">
+                🌸 {type}
+            </div>
+
+        </div>
+    );
 }
