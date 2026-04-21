@@ -1,41 +1,33 @@
-
-
 import { WeatherHook } from "./hooks/weather-hook";
-import SunAnimation from "./animation/SunAnimation";
-import RainAnimation from "./animation/RainAnimation";
-import SnowAnimation from "./animation/SnowAnimation";
-import NightAnimation from "./animation/NightAnimation";
-
+import MySunAnimation from "./animation/SunAnimation";
 
 function App() {
-    const { weather, updateWeather, printer, cityInput,setCityInput } = WeatherHook();
-
-    let WeatherAnimation = null;
-
-
-    if (weather.type === "sun") WeatherAnimation = <SunAnimation />;
-    else if (weather.type === "rain") WeatherAnimation = <RainAnimation />;
-    else if (weather.type === "snow") WeatherAnimation = <SnowAnimation />;
-    else if (weather.type === "night") WeatherAnimation = <NightAnimation />;
-
+    const { weather, cityInput, setCityInput, updateWeather, printer } = WeatherHook();
 
     return (
+        <>
+            {weather.success && <MySunAnimation type={weather.type} />}
+
         <div className="p-8 font-sans max-w-2xl mx-auto">
-
-            {WeatherAnimation}
-
             <h1 className="text-4xl font-bold mb-6">🌤️ Sakura Weather App</h1>
 
+            
             <div className="bg-gray-100 p-5 rounded-lg mb-6">
                 <h2 className="text-2xl font-semibold mb-3">Temperature: {weather.temperature}°C</h2>
                 <p className="text-lg text-gray-700 mb-2">Weather type: {weather.type}</p>
-                {/*<p className="text-lg text-gray-700">City: {weather.city}</p>*/}
-                <input type="text" value={cityInput} onChange={(e) => setCityInput(e.target.value)} placeholder="Write a city:"className={""} />
-                <p>Weather city: {weather.city}</p>
+                <p className="text-lg text-gray-700">City: {weather.city}</p>
+                <input
+                    type="text"
+                    placeholder="Enter city name..."
+                    value={cityInput}
+                    onChange={(e) => setCityInput(e.target.value)}
+
+                />
+
             </div>
 
-            <button
-                onClick={updateWeather}
+            <button 
+                onClick={updateWeather} 
                 disabled={weather.loading}
                 className={`px-5 py-2 text-white rounded font-semibold bg-pink-500 transition ${weather.loading ? "opacity-60 cursor-not-allowed" : "cursor-pointer hover:bg-pink-600"}`}
             >
@@ -46,14 +38,23 @@ function App() {
             {weather.success && <p className="mt-4 text-green-600 font-semibold">✅ Weather updated!</p>}
             {weather.error && <p className="mt-4 text-red-600 font-semibold">❌ Error loading weather</p>}
 
-            <button
+            <button 
                 onClick={printer}
                 className="mt-5 ml-2 px-4 py-2 border border-gray-400 rounded cursor-pointer hover:bg-gray-100 transition"
             >
                 Log to Console
             </button>
+
+            {weather.success && (
+                <MySunAnimation type={weather.type} />
+            )}
+
         </div>
+        </>
     );
 }
 
 export default App;
+
+
+

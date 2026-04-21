@@ -1,40 +1,97 @@
-import Particles from "@tsparticles/react";
-import { useMemo, useCallback } from "react";
-import { loadSlim } from "tsparticles-slim";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { useEffect, useMemo, useState } from "react";
+import type { ISourceOptions } from "@tsparticles/engine";
 
 export default function MySunAnimation({ type }: { type: string }) {
+    const [init, setInit] = useState(false);
 
-    const particlesInit = useCallback(async (engine: any) => {
-        await loadSlim(engine);
+    useEffect(() => {
+        const initEngine = async () => {
+            try {
+                await initParticlesEngine(async (engine) => {
+                    await loadSlim(engine);
+                });
+                console.log("✅ tsParticles ready");
+                setInit(true);
+            } catch (error) {
+                console.error("❌ tsParticles init error:", error);
+                // Навіть якщо помилка, пробуємо показати частинки (можливо, спрацює)
+                setInit(true);
+            }
+        };
+        initEngine();
     }, []);
 
-    const options = useMemo(() => ({
+    const options: ISourceOptions = useMemo(() => ({
         particles: {
-            number: { value: 80 },
+            number: { value: 40 }, // Менше пелюсток для більш реалістичного вигляду
+            // 3. Налаштовуємо форму "image"
+            shape: {
+                type: "image",
+                options: {
+                    image: {
+                        // Можна використати будь-яке зображення з інтернету або локальне
+                        src: "https://illustcenter.com/wp-content/uploads/2025/01/rdesign_18609.png", // Приклад іконки пелюстки сакури
+                        width: 150,
+                        height: 150,
+                    },
+                },
+            },
+            color: { value: "#ffb7c5" }, // Ніжно-рожевий колір
             move: {
                 enable: true,
-                speed: 2,
-                direction: "bottom"
+                speed: 1.2,
+                direction: "bottom",
+                random: true,
+                straight: false,
+                outModes: "out",
             },
-            shape: {
-                type: "circle"
-            }
-        }
+            rotate: {
+                value: { min: 0, max: 360 },
+                direction: "random",
+                animation: {
+                    enable: true,
+                    speed: 5,
+                },
+            },
+            opacity: { value: 0.8, random: true },
+            size: { value: { min: 8, max: 16 }, random: true },
+        },
+        // 4. Додаємо легкий вітерець для реалістичності
+        interactivity: {
+            events: {
+                onHover: {
+                    enable: true,
+                    mode: "bubble",
+                },
+            },
+            modes: {
+                bubble: {
+                    distance: 200,
+                    size: 20,
+                    duration: 2,
+                    opacity: 0.8,
+                },
+            },
+        },
     }), [type]);
 
-    return (
-        <div className="w-full h-screen relative overflow-hidden bg-gradient-to-b from-blue-400 to-blue-100">
 
-            <Particles
-                init={particlesInit}
-                options={options as any}
-                className="absolute inset-0 z-0"
-            />
-
-            <div className="relative z-10 flex items-center justify-center h-full text-4xl font-bold text-white">
-                🌸 {type}
+    if (init) {
+        return (
+            <div className="w-full h-screen relative overflow-hidden bg-gradient-to-b from-blue-400 to-blue-100">
+                <Particles
+                    id="tsparticles"
+                    options={options}
+                    className="absolute inset-0 z-0"
+                />
+                <div className="relative z-10 flex items-center justify-center h-full text-4xl font-bold text-white">
+                    {type === "sun"}
+                </div>
             </div>
+        );
+    }
 
-        </div>
-    );
+    return null;
 }
