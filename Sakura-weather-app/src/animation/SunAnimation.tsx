@@ -3,7 +3,7 @@ import { loadSlim } from "@tsparticles/slim";
 import { useEffect, useMemo, useState } from "react";
 import type { ISourceOptions } from "@tsparticles/engine";
 
-export default function MySunAnimation({ type }: { type: string }) {
+export default function MySunAnimation({ type }: { type: "sun" | "rain" | "snow" | "night" }) {
     const [init, setInit] = useState(false);
 
     useEffect(() => {
@@ -16,7 +16,6 @@ export default function MySunAnimation({ type }: { type: string }) {
                 setInit(true);
             } catch (error) {
                 console.error("❌ tsParticles init error:", error);
-                // Навіть якщо помилка, пробуємо показати частинки (можливо, спрацює)
                 setInit(true);
             }
         };
@@ -25,14 +24,12 @@ export default function MySunAnimation({ type }: { type: string }) {
 
     const options: ISourceOptions = useMemo(() => ({
         particles: {
-            number: { value: 40 }, // Менше пелюсток для більш реалістичного вигляду
-            // 3. Налаштовуємо форму "image"
+            number: { value: 40 },
             shape: {
                 type: "image",
                 options: {
                     image: {
-                        // Можна використати будь-яке зображення з інтернету або локальне
-                        src: "https://illustcenter.com/wp-content/uploads/2025/01/rdesign_18609.png", // Приклад іконки пелюстки сакури
+                        src: "https://illustcenter.com/wp-content/uploads/2025/01/rdesign_18609.png",
                         width: 150,
                         height: 150,
                     },
@@ -58,7 +55,6 @@ export default function MySunAnimation({ type }: { type: string }) {
             opacity: { value: 0.8, random: true },
             size: { value: { min: 8, max: 16 }, random: true },
         },
-        // 4. Додаємо легкий вітерець для реалістичності
         interactivity: {
             events: {
                 onHover: {
@@ -78,7 +74,7 @@ export default function MySunAnimation({ type }: { type: string }) {
     }), [type]);
 
 
-    if (init) {
+    if (type === "sun") {
         return (
             <div className="w-full h-screen relative overflow-hidden bg-gradient-to-b from-blue-400 to-blue-100">
                 <Particles
