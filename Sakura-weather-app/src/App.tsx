@@ -1,12 +1,23 @@
 import { WeatherHook } from "./hooks/weather-hook";
-import MySunAnimation from "./animation/SunAnimation";
-
+import RainAnimation from "./animation/RainAnimation.tsx";
+import NightAnimation from "./animation/NightAnimation.tsx";
+import SunAnimation from "./animation/SunAnimation.tsx";
+import SnowAnimation from "./animation/SnowAnimation.tsx";
 function App() {
     const { weather, cityInput, setCityInput, updateWeather, printer } = WeatherHook();
 
     return (
         <>
-            {weather.success && <MySunAnimation type={weather.type} />}
+            {weather.success && (
+                <>
+                    {weather.type === "sun" && <SunAnimation />}
+                    {weather.type === "rain" && <RainAnimation />}
+                    {weather.type === "snow" && <SnowAnimation />}
+                    {weather.type === "night" && <NightAnimation />}
+                </>
+            )}
+
+
 
         <div className="p-8 font-sans max-w-2xl mx-auto">
             <h1 className="text-4xl font-bold mb-6">🌤️ Sakura Weather App</h1>
@@ -45,9 +56,9 @@ function App() {
                 Log to Console
             </button>
 
-            {weather.success && (
-                <MySunAnimation type={weather.type} />
-            )}
+            {/*{weather.success && (*/}
+            {/*    <MySunAnimation type={weather.type} />*/}
+            {/*)}*/}
 
         </div>
         </>

@@ -3,7 +3,7 @@ import { loadSlim } from "@tsparticles/slim";
 import { useEffect, useMemo, useState } from "react";
 import type { ISourceOptions } from "@tsparticles/engine";
 
-export default function MySunAnimation({ type }: { type: "sun" | "rain" | "snow" | "night" }) {
+export default function MySunAnimation() {
     const [init, setInit] = useState(false);
 
     useEffect(() => {
@@ -35,10 +35,10 @@ export default function MySunAnimation({ type }: { type: "sun" | "rain" | "snow"
                     },
                 },
             },
-            color: { value: "#ffb7c5" }, // Ніжно-рожевий колір
+            color: { value: "#ffb7c5" },
             move: {
                 enable: true,
-                speed: 1.2,
+                speed: 3,
                 direction: "bottom",
                 random: true,
                 straight: false,
@@ -71,23 +71,27 @@ export default function MySunAnimation({ type }: { type: "sun" | "rain" | "snow"
                 },
             },
         },
-    }), [type]);
+    }), []);
+
+    if(!init) return null;
 
 
-    if (type === "sun") {
+
         return (
-            <div className="w-full h-screen relative overflow-hidden bg-gradient-to-b from-blue-400 to-blue-100">
+            <div className="w-full h-screen relative overflow-hidden bg-gradient-to-b from-yellow-200 to-orange-200">
+
+                {/*<img*/}
+                {/*    src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/2600.svg"*/}
+                {/*    alt="sun"*/}
+                {/*    className="absolute inset-0 w-full h-full object-contain z-0"*/}
+                {/*/>*/}
+
+
                 <Particles
                     id="tsparticles"
                     options={options}
-                    className="absolute inset-0 z-0"
+                    className="absolute inset-0 z-10"
                 />
-                <div className="relative z-10 flex items-center justify-center h-full text-4xl font-bold text-white">
-                    {type === "sun"}
-                </div>
             </div>
         );
-    }
-
-    return null;
 }
