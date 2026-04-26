@@ -71,6 +71,12 @@ export default function NightAnimation() {
                 },
             },
         },
+        twinkle: {
+            particles: {
+                enable: true,
+                frequency: 0.05
+            }
+        }
     }), []);
 
     if(!init) return null;
@@ -78,7 +84,7 @@ export default function NightAnimation() {
 
 
     return (
-        <div className="w-full h-screen fixed inset-0 bg-gradient-to-b from-indigo-950 to-violet-950 z-0">
+        <div className="w-full h-screen fixed inset-0 bg-black z-0">
             {/*<img*/}
             {/*    src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/2600.svg"*/}
             {/*    alt="sun"*/}

@@ -82,9 +82,6 @@ export default function MySnowAnimation() {
                 options={options}
                 className="absolute inset-0 z-0"
             />
-            <div>
-                <p>Snow</p>
-            </div>
         </div>
     );
 }
