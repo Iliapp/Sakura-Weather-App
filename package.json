@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@chakra-ui/react": "^3.34.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@tsparticles/react": "^3.0.0",
+    "@types/react": "^19.2.14",
+    "framer-motion": "^12.38.0",
+    "tsparticles": "^3.9.1"
+  }
+}
