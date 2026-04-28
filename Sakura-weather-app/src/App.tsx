@@ -3,8 +3,53 @@ import RainAnimation from "./animation/RainAnimation.tsx";
 import NightAnimation from "./animation/NightAnimation.tsx";
 import SunAnimation from "./animation/SunAnimation.tsx";
 import SnowAnimation from "./animation/SnowAnimation.tsx";
+import {motion} from "framer-motion";
+import {AnimatePresence} from "framer-motion";
+import type { WeatherType } from "./hooks/weather-hook";
+
 function App() {
-    const { weather, cityInput, setCityInput, updateWeather, printer } = WeatherHook();
+
+
+    const WeatherCard = ({ weather }: { weather: WeatherType }) => {
+        return (
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="mt-6 bg-white/70 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-white/30">
+
+
+
+                <h1 className="text-2xl font-bold">{weather.city}</h1>
+                <h2 className="text-2xl font-semibold mb-3">Temperature: {weather.temperature}°C</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+            </motion.div>
+            );
+
+    };
+
+
+
+
+
+
+
+
+
+
+    const { weather, cityInput, setCityInput, updateWeather } = WeatherHook();
 
     return (
         <>
@@ -16,6 +61,9 @@ function App() {
                     {weather.type === "night" && <NightAnimation />}
                 </>
             )}
+
+
+
 
 
 
@@ -49,12 +97,7 @@ function App() {
             {weather.success && <p className="mt-4 text-green-600 font-semibold">✅ Weather updated!</p>}
             {weather.error && <p className="mt-4 text-red-600 font-semibold">❌ Error loading weather</p>}
 
-            <button 
-                onClick={printer}
-                className="mt-5 ml-2 px-4 py-2 border border-gray-400 rounded cursor-pointer hover:bg-gray-100 transition"
-            >
-                Log to Console
-            </button>
+
 
             {/*{weather.success && (*/}
             {/*    <MySunAnimation type={weather.type} />*/}
